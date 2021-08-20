@@ -1,4 +1,6 @@
 import React from 'react';
+import {Spinner} from '@primer/components';
+
 
 export default ({info}) => {
     const renderDetails = () => {
@@ -15,7 +17,14 @@ export default ({info}) => {
         if (typeof info === 'undefined') {
             return "For information please search and select a domain";
         } else if (!info) {
-            return "Loading";
+            return (
+                <div>
+                    <div>
+                        <Spinner size="large" />
+                    </div>
+                    <div>Loading</div>
+                </div>
+            );
         }
 
         return (

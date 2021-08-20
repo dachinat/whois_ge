@@ -6,15 +6,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
+import {ThemeProvider} from '@primer/components';
 
 import App from '../components/App';
 import reducers from '../reducers';
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-      <Provider store={createStore(reducers, {})}>
-        <App />
-      </Provider>,
+      <ThemeProvider>
+          <Provider store={createStore(reducers, {})}>
+            <App />
+          </Provider>
+      </ThemeProvider>,
       document.body.appendChild(document.createElement('div')),
   );
 })

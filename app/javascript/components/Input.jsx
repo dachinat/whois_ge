@@ -1,4 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
+import {TextInput,ButtonInvisible} from '@primer/components';
+import {PlusIcon, InfoIcon} from '@primer/octicons-react'
 
 export default ({domains, setDomains, setInfo}) => {
     const [inputs, setInputs] = useState([]);
@@ -170,7 +172,7 @@ export default ({domains, setDomains, setInfo}) => {
         return (
           <div key={key}>
               <div>
-                  <input ref={el => {
+                  <TextInput ref={el => {
                       refPos[key] = refs.current.length;
                       return refs.current[key] = el;
                   }} type="text"
@@ -192,9 +194,10 @@ export default ({domains, setDomains, setInfo}) => {
                           goDown(key);
                       }
                   }} onFocus={() => setSelectedInput(key)} autoFocus />
-                  <span><button onClick={e => addInput(key)}>+</button></span>
+                  <span><ButtonInvisible onClick={e => addInput(key)}><PlusIcon /></ButtonInvisible></span>
                   <span>
-                      <button onClick={e => refs.current[key].focus()}>i</button>
+
+                      <ButtonInvisible onClick={e => refs.current[key].focus()}><InfoIcon/></ButtonInvisible>
                   </span>
               </div>
           </div>

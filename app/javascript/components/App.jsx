@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
+import {BaseStyles, Box, Heading, ButtonOutline} from '@primer/components';
 
 import Input from './Input';
 import Info from './Info';
@@ -17,7 +18,7 @@ export default () => {
         const { data } = await axios.post("/api/check_multi", {
             list,
         }, {});
-        setInfo(undefinoed);
+        setInfo(undefined);
 
         setDomains(domains => {
             let newDomains = {};
@@ -25,7 +26,7 @@ export default () => {
                 newDomains[domain] = {...domains[domain], res: data[domains[domain].value]};
 
                 if (newDomains[domain]?.res?.available) {
-                    newDomains[domain].ref.style.backgroundColor = 'green';
+                    newDomains[domain].ref.style.backgroundColor = '#7ad687';
                 }
             }
            return {...newDomains};
@@ -33,16 +34,20 @@ export default () => {
     };
 
     return (
-      <div>
-          <h2>GE Whois Multi Domain Checker</h2>
-          <div>
-              <Input domains={domains} setDomains={setDomains} setInfo={setInfo} />
-              <button onClick={search}>Search</button>
-          </div>
-          <div>
-              <Info info={info} />
-          </div>
-      </div>
+      <BaseStyles>
+          <Box color="text.secondary" bg="bg.tertiary" p={3} m={4}>
+              <Heading mb={2}>GE Whois Multi Domain Checker</Heading>
+          </Box>
+          <Box display="flex">
+              <Box flex={1} borderColor="border.primary" borderWidth={1} borderStyle="solid" p={5} m={3}>
+                  <Input domains={domains} setDomains={setDomains} setInfo={setInfo} />
+                  <ButtonOutline onClick={search} m={2}>Search</ButtonOutline>
+              </Box>
+              <Box flex={1} borderColor="border.primary" borderWidth={1} borderStyle="solid" p={5} m={3}>
+                  <Info info={info} />
+              </Box>
+          </Box>
+      </BaseStyles>
     );
 };
 
