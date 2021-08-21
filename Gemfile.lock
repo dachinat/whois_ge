@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/dachinat/whois-parser.git
+  revision: 8ef2d77de667f280bd49621a2f40e78b1372dfe9
+  specs:
+    whois-parser (1.2.0)
+      activesupport (>= 4)
+      whois (>= 4.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -219,6 +227,7 @@ DEPENDENCIES
   webdrivers
   webpacker (~> 5.0)
   whois
+  whois-parser!
 
 RUBY VERSION
    ruby 3.0.0p0
