@@ -1,3 +1,5 @@
+require "whois-parser"
+
 class Api::DomainsController < Api::ApplicationController
   def check_multi
     whois = Whois::Client.new
@@ -14,18 +16,20 @@ class Api::DomainsController < Api::ApplicationController
         next
       end
 
-      available = record.to_s.include? "No match for"
-
-      unless available
-        split = record.to_s.split("\r\n\r\n\r\n")
-        details = split[0]
-        details.strip!.gsub!(/\r\n\s+/,"<br/>")
-      end
+      parser = record.parser
 
       @response[domain] = {
         domain: domain,
-        available: available,
-        details: details || nil
+        available: parser.available?,
+        details: {
+          created_on: parser.created_on,
+          expires_on: parser.expires_on,
+          registrar: parser.registrar,
+          registrant_contacts: parser.registrant_contacts,
+          admin_contacts: parser.admin_contacts,
+          technical_contacts: parser.technical_contacts,
+          nameservers: parser.nameservers
+        }
       }
     end
 
