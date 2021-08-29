@@ -178,6 +178,7 @@ export default ({domains, setDomains, setInfo}) => {
                   }} type="text"
                      onChange={e => {
                          e.target.style.backgroundColor = 'white';
+                         e.target.parentElement.style.backgroundColor = 'white';
                          setDomains(domains => ({...domains, [key]: {value: e.target.value, ref: refs.current[key]}}))
                      }}
                      onKeyDown={e => {

@@ -26,6 +26,7 @@ export default () => {
                 newDomains[domain] = {...domains[domain], res: data[domains[domain].value]};
 
                 if (newDomains[domain]?.res?.available) {
+                    newDomains[domain].ref.parentElement.style.backgroundColor = '#7ad687';
                     newDomains[domain].ref.style.backgroundColor = '#7ad687';
                 }
             }
