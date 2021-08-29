@@ -16,4 +16,4 @@ Rails 6 and React 17 app for checking domains under .GE registration zone
 
 ## From DockerHub
 
-`docker run -dp 3000:3000 dachinat/whois_ge:v1`
+`docker run -dp 3000:3000 dachinat/whois_ge:latest`
