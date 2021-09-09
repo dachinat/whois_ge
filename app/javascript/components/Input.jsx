@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {TextInput,ButtonInvisible} from '@primer/components';
-import {PlusIcon, InfoIcon} from '@primer/octicons-react'
+import {PlusIcon, DashIcon, InfoIcon} from '@primer/octicons-react'
 
 export default ({domains, setDomains, setInfo}) => {
     const [inputs, setInputs] = useState([]);
@@ -71,7 +71,13 @@ export default ({domains, setDomains, setInfo}) => {
               return true;
             });
             try {
-                refs.current[refPos[tmp] || 1].focus();
+                const input = refs.current[refPos[tmp] || 1];
+
+                input.focus();
+                setTimeout(() => {
+                    const end = input.value.length;
+                    input.setSelectionRange(end, end);
+                }, 0);
             } catch (e) {}
             return [...inputs];
         });
@@ -92,7 +98,12 @@ export default ({domains, setDomains, setInfo}) => {
 
             try {
                 tmp = parseInt(inputs[tmp + 1].key) || undefined;
-                refs.current[refPos[tmp]].focus();
+
+                const input = refs.current[refPos[tmp]];
+                const end = input.value.length;
+
+                input.focus();
+                input.setSelectionRange(2,2);
             } catch(e) {
             }
 
@@ -193,8 +204,11 @@ export default ({domains, setDomains, setInfo}) => {
                           goUp(key);
                       } else if (e.key === 'ArrowDown') {
                           goDown(key);
+                      } else if (e.ctrlKey && e.keyCode === 88) {
+                          removeInput(key);
                       }
                   }} onFocus={() => setSelectedInput(key)} autoFocus />
+                  <span><ButtonInvisible onClick={e => removeInput(key)}><DashIcon /></ButtonInvisible></span>
                   <span><ButtonInvisible onClick={e => addInput(key)}><PlusIcon /></ButtonInvisible></span>
                   <span>
 
