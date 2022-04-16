@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import {BaseStyles, Box, Heading, ButtonOutline} from '@primer/components';
+import {PageLayout, BaseStyles, Box, Heading, Button} from '@primer/react';
 
 import Input from './Input';
 import Info from './Info';
@@ -36,18 +36,33 @@ export default () => {
 
     return (
       <BaseStyles>
-          <Box color="text.secondary" bg="bg.tertiary" p={3} m={4}>
+          <PageLayout>
+            <PageLayout.Header divider="line">
               <Heading mb={2}>GE Whois Multi Domain Checker</Heading>
-          </Box>
-          <Box display="flex">
-              <Box flex={1} borderColor="border.primary" borderWidth={1} borderStyle="solid" p={5} m={3}>
-                  <Input domains={domains} setDomains={setDomains} setInfo={setInfo} />
-                  <ButtonOutline onClick={search} m={2}>Search</ButtonOutline>
+            </PageLayout.Header>
+
+            <PageLayout.Content width="small">
+              <Box p={5} m={5}>
+                <Input domains={domains} setDomains={setDomains} setInfo={setInfo} />
+                <Box m={3}>
+                  <Button variant="outline" onClick={search}>Search</Button>
+                </Box>
               </Box>
-              <Box flex={1} borderColor="border.primary" borderWidth={1} borderStyle="solid" p={5} m={3}>
-                  <Info info={info} />
+            </PageLayout.Content>
+
+            <PageLayout.Pane divider="line" width="large">
+
+              <Box p={5} m={3}>
+                <Info info={info} />
               </Box>
-          </Box>
+            </PageLayout.Pane>
+
+            <PageLayout.Footer divider="line">
+              Made with React + Ruby on Rails
+            </PageLayout.Footer>
+
+
+          </PageLayout>
       </BaseStyles>
     );
 };

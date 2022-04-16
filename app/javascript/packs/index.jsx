@@ -4,7 +4,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ThemeProvider } from '@primer/components';
+import { ThemeProvider } from '@primer/react';
 
 import App from '../components/App';
 

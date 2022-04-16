@@ -1,25 +1,48 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {TextInput,ButtonInvisible} from '@primer/components';
-import {PlusIcon, DashIcon, InfoIcon} from '@primer/octicons-react'
+import ReactDOM from "react-dom";
+import {Box, TextInput, Button} from '@primer/react';
+import {PlusIcon, DashIcon, InfoIcon, StarIcon, StarFillIcon } from '@primer/octicons-react'
 
 export default ({domains, setDomains, setInfo}) => {
     const [inputs, setInputs] = useState([]);
     const [selectedInput, setSelectedInput] = useState(null);
 
     let refs = useRef([]);
+    let favRefs = useRef([]);
+    let count = 0;
 
     useEffect(() => {
-        addInput();
+
+        let starred = [];
+        const localStorageStarred = localStorage.getItem('starred');
+        starred = JSON.parse(localStorageStarred);
+        if (starred.length > 0) {
+
+          starred.forEach((domain, i) => {
+            setTimeout(() => addInput(count, domain), 0);
+          });
+
+          setTimeout(() => {
+            refs.current.forEach((ref, i) => {
+              if (ref) {
+                ReactDOM.render(star(ref.value), favRefs.current[i]);
+                setDomains(domains => ({...domains, [i]: {value: ref.value, ref: refs.current[i]}}));
+              }
+            });
+          },0)
+
+        } else {
+          addInput();
+        }
     }, []);
 
     useEffect(() => {
         setInfo(domains[selectedInput]?.res);
     }, [selectedInput, domains]);
 
-    let count = 0;
     const refPos = {};
 
-    const addInput = (currentKey = 0) => {
+    const addInput = (currentKey = 0, domain = '') => {
         count++;
         setInputs(inputs => {
             const input = refs.current[currentKey];
@@ -32,12 +55,12 @@ export default ({domains, setDomains, setInfo}) => {
 
                 newInputs.push(input);
                 if (currentKey.toString() === input.key) {
-                    newInputs.push(renderInput(count));
+                    newInputs.push(renderInput(count, domain));
                 }
             });
 
             if (inputs.length === 0) {
-                newInputs.push(renderInput(count));
+                newInputs.push(renderInput(count, domain));
             }
 
             return [...newInputs];
@@ -45,6 +68,10 @@ export default ({domains, setDomains, setInfo}) => {
     };
 
     const removeInput = (key) => {
+        if (key === 1) {
+          return;
+        }
+
         goUp(key);
 
         setInputs(inputs => {
@@ -175,22 +202,75 @@ export default ({domains, setDomains, setInfo}) => {
         el.dispatchEvent(event);
     };
 
-    const domainInfo = (key) => {
-        console.log(domains[key]);
+    const addRemoveStar = key => {
+
+      const domain = refs.current[key].value;
+
+      if (domain.length < 1) {
+        return;
+      }
+
+      let starred = [];
+
+      const localStorageStarred = localStorage.getItem('starred');
+
+      if (localStorageStarred) {
+        starred = JSON.parse(localStorageStarred);
+      }
+
+      if (starred.includes(domain)) {
+        starred = starred.filter(k => k !== domain);
+      } else {
+        starred.push(domain);
+      }
+
+      localStorage.setItem('starred', JSON.stringify(starred));
+
+      refs.current.forEach((ref, i) => {
+        if (ref) {
+          ReactDOM.render(star(ref.value), favRefs.current[i]);
+        }
+      });
     };
 
-    const renderInput = key => {
+    const star = domain => {
+      let starred = [];
+
+      const localStorageStarred = localStorage.getItem('starred');
+
+      if (localStorageStarred) {
+        starred = JSON.parse(localStorageStarred);
+      }
+
+      if (starred.includes(domain)) {
+        return <StarFillIcon />;
+      }
+      return <StarIcon />;
+    };
+
+    const renderInput = (key, domain = '') => {
         return (
           <div key={key}>
-              <div>
-                  <TextInput ref={el => {
+              <Box display="flex">
+                  <span><Button variant="invisible" onClick={e => {
+                    addRemoveStar(key);
+                  }}>
+                    <div ref={el => {
+                      return favRefs.current[key] = el;
+                    }}>
+                      <StarIcon />
+                    </div>
+                  </Button></span>
+                  <TextInput defaultValue={domain} ref={el => {
                       refPos[key] = refs.current.length;
                       return refs.current[key] = el;
                   }} type="text"
                      onChange={e => {
                          e.target.style.backgroundColor = 'white';
                          e.target.parentElement.style.backgroundColor = 'white';
-                         setDomains(domains => ({...domains, [key]: {value: e.target.value, ref: refs.current[key]}}))
+                         setDomains(domains => ({...domains, [key]: {value: e.target.value, ref: refs.current[key]}}));
+
+                         ReactDOM.render(star(refs.current[key].value), favRefs.current[key]);
                      }}
                      onKeyDown={e => {
                       if (e.key === 'Enter') {
@@ -208,20 +288,22 @@ export default ({domains, setDomains, setInfo}) => {
                           removeInput(key);
                       }
                   }} onFocus={() => setSelectedInput(key)} autoFocus />
-                  <span><ButtonInvisible onClick={e => removeInput(key)}><DashIcon /></ButtonInvisible></span>
-                  <span><ButtonInvisible onClick={e => addInput(key)}><PlusIcon /></ButtonInvisible></span>
+                  <span><Button variant="invisible" onClick={e => removeInput(key)}><DashIcon /></Button></span>
+                  <span><Button variant="invisible" onClick={e => addInput(key)}><PlusIcon /></Button></span>
                   <span>
 
-                      <ButtonInvisible onClick={e => refs.current[key].focus()}><InfoIcon/></ButtonInvisible>
+                      <Button variant="invisible" onClick={e => refs.current[key].focus()}><InfoIcon/></Button>
                   </span>
-              </div>
+              </Box>
           </div>
         );
     }
 
     return (
         <div>
-            Use arrow and enter keys for navigation
+            <Box m={2}>
+              Use arrow and enter keys for navigation
+            </Box>
             <div>
                 {inputs}
             </div>

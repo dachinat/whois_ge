@@ -5,7 +5,7 @@ services:
     # The root directory from which we're building.
     build: .
     image: dachinat/whois_ge:latest
-    
+
     # This makes it so any code changes inside the project
     # directory get synced with Docker. Without this line,
     # we'd have to restart the container every time we
