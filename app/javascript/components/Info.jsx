@@ -1,10 +1,10 @@
 import React from 'react';
-import {Spinner} from '@primer/components';
+import {Spinner} from '@primer/react';
 import dayjs from 'dayjs';
 
 export default ({info}) => {
     const renderDetails = () => {
-        if (!info.details || info.available) {
+        if (!info.details || !info.details.registrar || info.available) {
             return null;
         }
         return (<div>
