@@ -16,19 +16,19 @@ class Api::DomainsController < Api::ApplicationController
         next
       end
 
-      parser = record.parser
+      @parser = record.parser
 
       @response[domain] = {
         domain: domain,
-        available: parser.available?,
+        available: available,
         details: {
-          created_on: parser.created_on,
-          expires_on: parser.expires_on,
-          registrar: parser.registrar,
-          registrant_contacts: parser.registrant_contacts,
-          admin_contacts: parser.admin_contacts,
-          technical_contacts: parser.technical_contacts,
-          nameservers: parser.nameservers
+          created_on: created_on,
+          expires_on: expires_on,
+          registrar: registrar,
+          registrant_contacts: registrant_contacts,
+          admin_contacts: admin_contacts,
+          technical_contacts: technical_contacts,
+          nameservers: nameservers
         }
       }
     end
@@ -38,5 +38,79 @@ class Api::DomainsController < Api::ApplicationController
 
   def domain_params
     params.require(:domain).permit(list: [])
+  end
+
+  private
+
+  def created_on
+    begin
+      @parser.created_on
+    rescue
+      ""
+    end
+  end
+
+  def expires_on
+    begin
+      @parser.expires_on
+    rescue
+      ""
+    end
+  end
+
+  def available
+    begin
+      @parser.available
+    rescue
+      ""
+    end
+  end
+
+  def registrar
+    begin
+      @parser.registrar
+    rescue
+      ""
+    end
+  end
+
+  def registrar
+    begin
+      @parser.registrar
+    rescue
+      ""
+    end
+  end
+
+  def registrant_contacts
+    begin
+      @parser.registrant_contacts
+    rescue
+      []
+    end
+  end
+
+  def admin_contacts
+    begin
+      @parser.admin_contacts
+    rescue
+      []
+    end
+  end
+
+  def technical_contacts
+    begin
+      @parser.technical_contacts
+    rescue
+      []
+    end
+  end
+
+  def nameservers
+    begin
+      @parser.nameservers
+    rescue
+      []
+    end
   end
 end

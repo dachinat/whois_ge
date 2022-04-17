@@ -176,18 +176,18 @@ export default ({domains, setDomains, setInfo, customInputBg}) => {
         }
 
         // add .ge
-        if (el.value && el.value.match(/.+\.ge$/) === null) {
-            let result = el.value.replace(/(.+)(?!\.ge(\n))/, '$1.ge$2');
-            el.value = result;
-        }
+        // if (el.value && el.value.match(/.+\.ge$/) === null) {
+        //     let result = el.value.replace(/(.+)(?!\.ge(\n))/, '$1.ge$2');
+        //     el.value = result;
+        // }
 
         //replace non .com.ge .edu.ge .net.ge .org.ge pvt.ge
-        regex = /(.+)\.(?!com)(?!net)(?!edu)(?!org)(?!pvt)(.*)\.(.*)/;
-        match = el.value.match(regex);
-        if (match !== null) {
-            let result = el.value.replace(regex, '$1.ge');
-            el.value = result;
-        }
+        // regex = /(.+)\.(?!com)(?!net)(?!edu)(?!org)(?!pvt)(.*)\.(.*)/;
+        // match = el.value.match(regex);
+        // if (match !== null) {
+        //     let result = el.value.replace(regex, '$1.ge');
+        //     el.value = result;
+        // }
 
         // make letters lowercase
         el.value = el.value.toLowerCase();

@@ -44,12 +44,12 @@ export default () => {
 
     return (
       <BaseStyles>
-        <Box bg={customBg} style={{height: '100vh'}}>
+        <Box bg={customBg} style={{height: '100%', minHeight: '100vh'}}>
           <PageLayout containerWidth="large">
             <PageLayout.Header divider="line">
               <Box display="flex">
                 <Box>
-                  <Heading mb={2}>GE Whois Multi Domain Checker</Heading>
+                  <Heading mb={2}><img src="/favicon.png" /> Multi Domain WHOIS Availability Checker</Heading>
                 </Box>
                 <Box flexGrow={1} style={{textAlign: 'right'}}>
                   <Switch />
@@ -74,7 +74,7 @@ export default () => {
             </PageLayout.Pane>
 
             <PageLayout.Footer divider="line">
-              <small>Made with RubyOnRails, React and Primer</small>
+              <small>Built on Rails, React and Primer 🎉</small>
             </PageLayout.Footer>
 
 
