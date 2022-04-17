@@ -60,7 +60,7 @@ class Api::DomainsController < Api::ApplicationController
 
   def available
     begin
-      @parser.available
+      @parser.available?
     rescue
       ""
     end
