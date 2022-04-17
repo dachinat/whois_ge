@@ -1,13 +1,20 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import {PageLayout, BaseStyles, Box, Heading, Button} from '@primer/react';
+import {PageLayout, BaseStyles, Box, Heading, Button, useColorSchemeVar} from '@primer/react';
 
 import Input from './Input';
 import Info from './Info';
+import Switch from './Switch';
 
 export default () => {
     const [domains, setDomains] = useState({});
     const [info, setInfo] = useState(undefined);
+
+    const customBg = useColorSchemeVar({
+      light: '#fff',
+      dark_dimmed: '#000'
+    });
+
 
     const search = async () => {
         const list = Object.values(domains).map(d => {
@@ -26,8 +33,9 @@ export default () => {
                 newDomains[domain] = {...domains[domain], res: data[domains[domain].value]};
 
                 if (newDomains[domain]?.res?.available) {
-                    newDomains[domain].ref.parentElement.style.backgroundColor = '#7ad687';
-                    newDomains[domain].ref.style.backgroundColor = '#7ad687';
+                    newDomains[domain].ref.parentElement.parentElement.querySelector('.info svg').style.color = '#71cd5b';
+                } else {
+                  newDomains[domain].ref.parentElement.parentElement.querySelector('.info svg').style.color = '#bd2a2a';
                 }
             }
            return {...newDomains};
@@ -36,9 +44,17 @@ export default () => {
 
     return (
       <BaseStyles>
-          <PageLayout>
+        <Box bg={customBg} style={{height: '100vh'}}>
+          <PageLayout containerWidth="large">
             <PageLayout.Header divider="line">
-              <Heading mb={2}>GE Whois Multi Domain Checker</Heading>
+              <Box display="flex">
+                <Box>
+                  <Heading mb={2}>GE Whois Multi Domain Checker</Heading>
+                </Box>
+                <Box flexGrow={1} style={{textAlign: 'right'}}>
+                  <Switch />
+                </Box>
+              </Box>
             </PageLayout.Header>
 
             <PageLayout.Content width="small">
@@ -58,11 +74,12 @@ export default () => {
             </PageLayout.Pane>
 
             <PageLayout.Footer divider="line">
-              Made with React + Ruby on Rails
+              <small>Made with RubyOnRails, React and Primer</small>
             </PageLayout.Footer>
 
 
           </PageLayout>
+        </Box>
       </BaseStyles>
     );
 };

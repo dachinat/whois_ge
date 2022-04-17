@@ -8,9 +8,11 @@ import { ThemeProvider } from '@primer/react';
 
 import App from '../components/App';
 
+const storedColorMode = localStorage.getItem('WHOIS_mode');
+
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <ThemeProvider>
+    <ThemeProvider dayScheme="light" nightScheme="dark_dimmed" colorMode={storedColorMode || 'day'} >
       <App />
     </ThemeProvider>,
     document.body.appendChild(document.createElement('div'))

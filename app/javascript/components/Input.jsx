@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react';
 import ReactDOM from "react-dom";
-import {Box, TextInput, Button} from '@primer/react';
+import {Box, TextInput, Button, useColorSchemeVar} from '@primer/react';
 import {PlusIcon, DashIcon, InfoIcon, StarIcon, StarFillIcon } from '@primer/octicons-react'
 
-export default ({domains, setDomains, setInfo}) => {
+export default ({domains, setDomains, setInfo, customInputBg}) => {
     const [inputs, setInputs] = useState([]);
     const [selectedInput, setSelectedInput] = useState(null);
 
@@ -14,9 +14,9 @@ export default ({domains, setDomains, setInfo}) => {
     useEffect(() => {
 
         let starred = [];
-        const localStorageStarred = localStorage.getItem('starred');
+        const localStorageStarred = localStorage.getItem('WHOIS_starred');
         starred = JSON.parse(localStorageStarred);
-        if (starred.length > 0) {
+        if (starred && starred.length > 0) {
 
           starred.forEach((domain, i) => {
             setTimeout(() => addInput(count, domain), 0);
@@ -212,7 +212,7 @@ export default ({domains, setDomains, setInfo}) => {
 
       let starred = [];
 
-      const localStorageStarred = localStorage.getItem('starred');
+      const localStorageStarred = localStorage.getItem('WHOIS_starred');
 
       if (localStorageStarred) {
         starred = JSON.parse(localStorageStarred);
@@ -224,7 +224,7 @@ export default ({domains, setDomains, setInfo}) => {
         starred.push(domain);
       }
 
-      localStorage.setItem('starred', JSON.stringify(starred));
+      localStorage.setItem('WHOIS_starred', JSON.stringify(starred));
 
       refs.current.forEach((ref, i) => {
         if (ref) {
@@ -236,7 +236,7 @@ export default ({domains, setDomains, setInfo}) => {
     const star = domain => {
       let starred = [];
 
-      const localStorageStarred = localStorage.getItem('starred');
+      const localStorageStarred = localStorage.getItem('WHOIS_starred');
 
       if (localStorageStarred) {
         starred = JSON.parse(localStorageStarred);
@@ -266,8 +266,6 @@ export default ({domains, setDomains, setInfo}) => {
                       return refs.current[key] = el;
                   }} type="text"
                      onChange={e => {
-                         e.target.style.backgroundColor = 'white';
-                         e.target.parentElement.style.backgroundColor = 'white';
                          setDomains(domains => ({...domains, [key]: {value: e.target.value, ref: refs.current[key]}}));
 
                          ReactDOM.render(star(refs.current[key].value), favRefs.current[key]);
@@ -290,8 +288,7 @@ export default ({domains, setDomains, setInfo}) => {
                   }} onFocus={() => setSelectedInput(key)} autoFocus />
                   <span><Button variant="invisible" onClick={e => removeInput(key)}><DashIcon /></Button></span>
                   <span><Button variant="invisible" onClick={e => addInput(key)}><PlusIcon /></Button></span>
-                  <span>
-
+                  <span className="info">
                       <Button variant="invisible" onClick={e => refs.current[key].focus()}><InfoIcon/></Button>
                   </span>
               </Box>
